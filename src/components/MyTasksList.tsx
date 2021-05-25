@@ -4,7 +4,7 @@ import { FlatList, TouchableOpacity, View, Text, StyleSheet, FlatListProps } fro
 function FlatListHeaderComponent() {
   return (
     <View>
-      <Text style={styles.header}>Minhas tasks</Text>
+      <Text style={styles.header}>Minhas tasks - collor pallet</Text>
     </View>
   )
 }

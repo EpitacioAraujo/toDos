@@ -62,7 +62,6 @@ export default function App() {
   const handleToggleTheme = () => {
     setCurrentTheme(oldTheme => oldTheme == 0 ? 1 : 0);
   }
-  console.log(`rgba(${themes[currentTheme].bodyBackground.join()})`);
   
   return (
     <View style={{

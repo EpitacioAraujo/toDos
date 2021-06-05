@@ -1,25 +1,20 @@
 import React from 'react';
-import { FlatList, TouchableOpacity, View, Text, StyleSheet, FlatListProps } from 'react-native';
+import { FlatList, TouchableOpacity, View, Text, StyleSheet } from 'react-native';
+import { IMyTasksList } from '../model/MyTaskList';
 
-function FlatListHeaderComponent() {
+interface IFlatList {
+  textColor: string
+}
+
+function FlatListHeaderComponent({textColor}: IFlatList) {
   return (
     <View>
-      <Text style={styles.header}>Minhas tasks - collor pallet</Text>
+      <Text style={[styles.header, {color: textColor}]}>Minhas tasks - collor pallet</Text>
     </View>
   )
 }
 
-interface MyTasksListProps {
-  tasks: {
-    id: number;
-    title: string;
-    done: boolean;
-  }[];
-  onPress: (id: number) => void;
-  onLongPress: (id: number) => void;
-}
-
-export function MyTasksList({ tasks, onLongPress, onPress }: MyTasksListProps) {
+export function MyTasksList({ tasks, onLongPress, onPress, themes, currentTheme }: IMyTasksList) {
   return (
     <FlatList
       data={tasks}
@@ -31,22 +26,40 @@ export function MyTasksList({ tasks, onLongPress, onPress }: MyTasksListProps) {
             activeOpacity={0.7}
             onPress={() => {onPress(item.id)}}
             onLongPress={() => onLongPress(item.id)}
-            style={
-              item.done ? styles.taskButtonDone : styles.taskButton
-            }
+            style={[
+              item.done ? styles.taskButtonDone : styles.taskButton,
+              {
+                backgroundColor:  item.done ?
+                                  `rgba(${themes[currentTheme].checkmarkedTaskBackground.join()})` :
+                                  `rgba(${themes[currentTheme].checkmarkTaskBackground.join()})`
+              }
+            ]}
             //TODO - use onPress, onLongPress and style props
           >
             <View 
               testID={`marker-${index}`}
-              style={
-                item.done ? styles.taskMarkerDone : styles.taskMarker
-              }
+              style={[
+                item.done ? styles.taskMarkerDone : styles.taskMarker, 
+                {
+                  borderColor:  item.done ?
+                                `rgba(${themes[currentTheme].checkmarkedTaskMarkBorder.join()})` :
+                                `rgba(${themes[currentTheme].checkmarkTaskMarkBorder.join()})`,
+                  backgroundColor:  item.done ?
+                                    `rgba(${themes[currentTheme].checkmarkedTaskMarkBackground.join()})` :
+                                    `rgba(${themes[currentTheme].checkmarkTaskMarkBackground.join()})`,
+                }
+              ]}
               //TODO - use style prop 
             />
             <Text 
-              style={
-                item.done ? styles.taskTextDone : styles.taskText
-              }
+              style={[
+                item.done ? styles.taskTextDone : styles.taskText,
+                {
+                  color:  item.done ?
+                          `rgba(${themes[currentTheme].checkmarkedTaskTextColor.join()})` :
+                          `rgba(${themes[currentTheme].checkmarkTaskTextColor.join()})`,
+                }
+              ]}
               //TODO - use style prop
             >
               {item.title}
@@ -54,7 +67,11 @@ export function MyTasksList({ tasks, onLongPress, onPress }: MyTasksListProps) {
           </TouchableOpacity>
         )
       }}
-      ListHeaderComponent={<FlatListHeaderComponent />}
+      ListHeaderComponent={
+        <FlatListHeaderComponent
+          textColor={`rgba(${themes[currentTheme].primaryTextColor.join()})`}
+        />
+      }
       ListHeaderComponentStyle={{
         marginBottom: 20
       }}

@@ -4,13 +4,10 @@ import { Header } from '../components/Header';
 import { MyTasksList } from '../components/MyTasksList';
 import { TodoInput } from '../components/TodoInput';
 
-interface Task {
-  id: number;
-  title: string;
-  done: boolean;
-}
+import { IHome } from '../model/Home';
+import { Task } from '../model/Task';
 
-export function Home() {
+export function Home(Props: IHome) {
   const [tasks, setTasks] = useState<Task[]>([]);
 
   function handleAddTask(newTaskTitle: string) {
@@ -49,16 +46,18 @@ export function Home() {
 
   return (
     <>
-      <Header />
+      <Header {...Props} />
 
       <TodoInput
-        addTask={handleAddTask} 
+        addTask={handleAddTask}
+        {...Props} 
       />
 
       <MyTasksList 
         tasks={tasks} 
         onPress={handleMarkTaskAsDone} 
-        onLongPress={handleRemoveTask} 
+        onLongPress={handleRemoveTask}
+        {...Props} 
       />
     </>
   )
